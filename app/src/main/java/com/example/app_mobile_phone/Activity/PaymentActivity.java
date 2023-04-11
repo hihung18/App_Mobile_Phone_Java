@@ -26,10 +26,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PaymentActivity extends AppCompatActivity {
-    TextView tvUsername, tvPhoneNumber, tvAddress, tvPrice, tvDiscount, tvDeliveryFee, tvTotalPrice;
+    TextView tvUsername,  tvPrice, tvDiscount, tvDeliveryFee, tvTotalPrice;
     RadioButton rbPaymentWithCard, rbPaymentOnDelivery;
     Button btnClose, btnConfirm;
-    EditText edtCoupon;
+    EditText edtCoupon ,edtPhoneNumber, edtAddress;
     ImageView ivRefreshCoupon;
     String COUPONSHOP = "lezada"; //coupon discount 10%
     String FREESHIP = "freeship";
@@ -58,10 +58,9 @@ public class PaymentActivity extends AppCompatActivity {
 
         int price = intent.getIntExtra("price", 0);
         tvPrice.setText(String.valueOf(price)+ ".00$" );
-
         tvUsername.setText(userInfoLogin.getUsername());
-        tvPhoneNumber.setText(phoneNumber);
-        tvAddress.setText(address);
+//        tvPhoneNumber.setText(phoneNumber);
+//        tvAddress.setText(address);
         //all price before use coupon
         int deliveryPrice = 2;
         tvDeliveryFee.setText("+" + String.valueOf(deliveryPrice) + ".00$");
@@ -101,11 +100,21 @@ public class PaymentActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (edtPhoneNumber.getText().toString().equals("")){
+                    edtPhoneNumber.setError("Please enter the phone number");
+                    return;
+                }
+                if (edtAddress.getText().toString().equals("")){
+                    edtAddress.setError("Please enter your address");
+                    return;
+                }
                 if (!rbPaymentOnDelivery.isChecked()) {
                     Toast.makeText(PaymentActivity.this, "Please choose payment method!", Toast.LENGTH_SHORT).show();
                 } else {
                     System.out.println("order confirmation successful!");
 //                    Toast.makeText(PaymentActivity.this, "order confirmation successful!", Toast.LENGTH_SHORT).show();
+                    order.setOrderAddress(edtAddress.getText().toString());
+                    order.setOrderPhone(edtPhoneNumber.getText().toString());
                     createOrder();
                     System.out.println("orderId: " + String.valueOf(orderId));
                     orderIds.forEach((key, value) -> {
@@ -143,8 +152,8 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void setControl() {
         tvUsername = findViewById(R.id.tvUsername);
-        tvPhoneNumber = findViewById(R.id.tvPhoneNumber);
-        tvAddress = findViewById(R.id.tvAddress);
+        edtPhoneNumber = findViewById(R.id.edtPhoneNumber);
+        edtAddress = findViewById(R.id.edtAddress);
         tvPrice = findViewById(R.id.tvPrice);
         tvDiscount = findViewById(R.id.tvDiscount);
         tvDeliveryFee = findViewById(R.id.tvDeliveryFee);

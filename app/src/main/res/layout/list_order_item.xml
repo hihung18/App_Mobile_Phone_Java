@@ -206,6 +206,7 @@
         android:enabled="true"
         android:text="Hủy Đơn Hàng"
         android:visibility="visible"
+        android:focusable="false"
         app:backgroundTint="?android:attr/colorFocusedHighlight" />
 
 </LinearLayout>

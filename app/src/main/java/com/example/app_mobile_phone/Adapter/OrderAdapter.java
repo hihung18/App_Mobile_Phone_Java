@@ -20,10 +20,15 @@ import com.example.app_mobile_phone.Model.Product;
 import com.example.app_mobile_phone.Model.Rate;
 import com.example.app_mobile_phone.Model.User;
 import com.example.app_mobile_phone.R;
+import com.example.app_mobile_phone.Retrofit.ApiService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderAdapter extends BaseAdapter {
 
@@ -92,7 +97,7 @@ public class OrderAdapter extends BaseAdapter {
         viewHolder.tvTotalPriceOrder.setText(String.valueOf(total));
 
         // Lấy đối tượng TextView và Button
-        TextView tvStatus = viewHolder.tvStatus;
+//        TextView tvStatus = viewHolder.tvStatus;
         Button btnHuyDon = viewHolder.btnHuyDon;
 
         if (order.getOrderStatus().equals("PREPARE")) {
@@ -115,6 +120,7 @@ public class OrderAdapter extends BaseAdapter {
                     public void onClick(DialogInterface dialog, int which) {
                         // Xử lý hủy đơn hàng
                         order.setOrderStatus("CANCELED");
+                        PutOrderByOrderID(Math.toIntExact(order.getOrderId()),order,userInfoLogin.getToken());
                         notifyDataSetChanged();
                         Toast.makeText(context, "Hủy Đơn Hàng Thành Công", Toast.LENGTH_SHORT).show();
                     }
@@ -143,5 +149,21 @@ public class OrderAdapter extends BaseAdapter {
             btnHuyDon = view.findViewById(R.id.btnHuyDon);
             tvTimeOrder = view.findViewById(R.id.tvTimeOrder);
         }
+    }
+    private void PutOrderByOrderID(int orderID , Order order, String token){
+        ApiService.apiService.PutOrderByOrderID(orderID, order,token).enqueue(new Callback<Order>() {
+            @Override
+            public void onResponse(Call<Order> call, Response<Order> response) {
+                if (response.isSuccessful())
+                    System.out.println("Canceled Success");
+                else System.out.println("Canceled ERROL");
+            }
+
+            @Override
+            public void onFailure(Call<Order> call, Throwable t) {
+                System.out.println("Canceled ERROL" + t);
+
+            }
+        });
     }
 }

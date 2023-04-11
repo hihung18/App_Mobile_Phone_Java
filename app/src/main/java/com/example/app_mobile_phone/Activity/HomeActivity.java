@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
     List<Product> product_cheap_List = new ArrayList<>();
     List<Product> produc_average_List = new ArrayList<>();
     List<Product> product_expensive_List = new ArrayList<>();
-    List<OrderDetailView> orderDetailViewList = new ArrayList<OrderDetailView>();
+    List<OrderDetailView> orderDetailViewList = new ArrayList<>();
     List<Feature> featureList = new ArrayList<>();
     ImageView imageViewsearch;
     User userInfoLogin;
@@ -105,19 +105,21 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 productList = response.body();
+                List<Product> productsListTmp = new ArrayList<>();
+                productsListTmp.addAll(productList);
                 System.out.println("ProductList Call API ok");
-                for (Product product : productList) {
+                for (Product product : productsListTmp) {
                     if (product.getCateId() == 1) product_cheap_List.add(product);
                     else if (product.getCateId() == 2) produc_average_List.add(product);
                     else if (product.getCateId() == 3) product_expensive_List.add(product);
                 }
                 Random random = new Random(); // Đối tượng Random để sinh số ngẫu nhiên
 
-                while (spm.size() < 6 && !productList.isEmpty()) { // Lặp cho đến khi đủ 6 mục hoặc hết danh sách ban đầu
-                    int randomIndex = random.nextInt(productList.size()); // Lấy số ngẫu nhiên trong khoảng từ 0 đến độ dài của danh sách
-                    Product randomItem = productList.get(randomIndex); // Lấy mục tương ứng từ danh sách ban đầu
+                while (spm.size() < 6 && !productsListTmp.isEmpty()) { // Lặp cho đến khi đủ 6 mục hoặc hết danh sách ban đầu
+                    int randomIndex = random.nextInt(productsListTmp.size()); // Lấy số ngẫu nhiên trong khoảng từ 0 đến độ dài của danh sách
+                    Product randomItem = productsListTmp.get(randomIndex); // Lấy mục tương ứng từ danh sách ban đầu
                     spm.add(randomItem); // Thêm vào danh sách mới
-                    productList.remove(randomIndex); // Loại bỏ khỏi danh sách ban đầu để tránh chọn trùng lặp
+                    productsListTmp.remove(randomIndex); // Loại bỏ khỏi danh sách ban đầu để tránh chọn trùng lặp
                 }
                 productMainAdapter = new ProductMainAdapter(getApplicationContext(), spm);
                 recyclerViewHome.setAdapter(productMainAdapter);
@@ -290,8 +292,8 @@ public class HomeActivity extends AppCompatActivity {
         alertDialog.show();
     }
     private void getListOrderAPI() {
-        System.out.println("UserInfo: "+ userInfoLogin);
-        System.out.println("UserID "+ userInfoLogin.getId());
+//        System.out.println("UserInfo: "+ userInfoLogin);
+//        System.out.println("UserID "+ userInfoLogin.getId());
         ApiService.apiService.getOrderDetailViews(userInfoLogin.getId(), userInfoLogin.getToken()).enqueue(new Callback<List<OrderDetailView>>() {
             @Override
             public void onResponse(Call<List<OrderDetailView>> call, Response<List<OrderDetailView>> response) {
@@ -302,7 +304,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<OrderDetailView>> call, Throwable t) {
-                Toast.makeText(HomeActivity.this, "Can't get data!" + t, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HomeActivity.this, "Can't get data!" + t, Toast.LENGTH_SHORT).show();
                 System.out.println("getListOrderAPI call API error " + t);
             }
         });
@@ -313,45 +315,16 @@ public class HomeActivity extends AppCompatActivity {
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.code() == 200) {
                     orderList = response.body();
-                    Toast.makeText(getApplicationContext(), "OrderList Call API ok  ", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "OrderList Call API ok  ", Toast.LENGTH_SHORT).show();
                     System.out.println("OrderList Call API ok");
                 }
             }
-
             @Override
             public void onFailure(Call<List<Order>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "OrderList Call API Errol  " + t, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "OrderList Call API Errol  " + t, Toast.LENGTH_SHORT).show();
                 System.out.println("OrderList Call API Errol  " + t);
             }
         });
     }
-//    private class LoadingTask extends AsyncTask<Void, Void, Void> {
-//        ProgressDialog dialog;
-//        @Override
-//        protected void onPreExecute() {
-//            // Hiển thị dialog loading trước khi thực hiện tác vụ
-//            super.onPreExecute();
-//            dialog = new ProgressDialog(HomeActivity.this);
-//            dialog.setMessage("Loading...");
-//            dialog.show();
-//        }
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            // Thực hiện tác vụ loading ở đây
-//            getListProductAPI();
-//            getListFeatureAPI();
-//            getListOrderAPI();
-//            getOrdersfromUserId();
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            // Ẩn dialog loading sau khi tác vụ hoàn thành
-//            super.onPostExecute(result);
-//            if (dialog.isShowing()) {
-//                dialog.dismiss();
-//            }
-//        }
-//    }
+
 }

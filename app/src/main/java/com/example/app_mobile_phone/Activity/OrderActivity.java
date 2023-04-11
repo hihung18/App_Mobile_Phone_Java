@@ -95,7 +95,7 @@ public class OrderActivity extends AppCompatActivity {
         lvDanhSach.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Order order = orderList_tmp.get(i);
+                Order order = filteredOrders.get(i);
                 Intent intent = new Intent(OrderActivity.this, OrderDetailActivity.class);
                 intent.putExtra("keyOrder", order);
                 Bundle bundle = new Bundle();
@@ -111,10 +111,10 @@ public class OrderActivity extends AppCompatActivity {
             }
         });
     }
-
     private void setControl() {
         lvDanhSach = findViewById(R.id.lvDanhSach);
         spinnerFilterOrder = findViewById(R.id.spinnerFilterOrder);
         ivPreviousOder = findViewById(R.id.ivPreviousOder);
     }
+
 }

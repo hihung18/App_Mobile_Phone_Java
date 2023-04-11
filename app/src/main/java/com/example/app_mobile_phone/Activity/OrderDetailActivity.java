@@ -49,11 +49,15 @@ public class OrderDetailActivity extends AppCompatActivity {
             Integer amount = entry.getValue();
             // Do something with productId and amount
             for (Product product : productList) {
+                System.out.print("ok");
                 if (productId == product.getProductId()) {
                     total += product.getProductPrice() * amount;
+                    System.out.println("Product: " + product.getProductId() + "Amount = " + amount
+                            + "Total = " + total);
                     break;
                 }
             }
+            System.out.println();
         }
         tvTotalsDetail.setText(String.valueOf(total));
         adapter = new OrderDetailAdapter(OrderDetailActivity.this , order.getOrderDetails(),productList);
