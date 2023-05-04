@@ -39,11 +39,11 @@ public class ForgotPassword_EnterCode extends AppCompatActivity {
             public void onClick(View view) {
                 String code = txtEnterCode.getText().toString().trim().toLowerCase();
                 if (code.length() == 0) {
-                    openDialogEnterCode("Vui lòng nhập mã xác minh!");
+                    openDialogEnterCode("Please enter the verification code!\n");
                     return;
                 }
                 if (!code.equals(String.valueOf(ForgotPassword_EnterEmail.otpCode))) {
-                    openDialogEnterCode("Mã xác minh không chính xác, vui lòng kiểm tra lại!");
+                    openDialogEnterCode("Verification code is incorrect, please check again!");
                     return;
                 }
 

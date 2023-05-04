@@ -84,7 +84,6 @@ public class OrderActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }

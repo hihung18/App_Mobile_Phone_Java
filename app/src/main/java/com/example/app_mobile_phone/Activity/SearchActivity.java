@@ -28,7 +28,7 @@ public class SearchActivity extends AppCompatActivity {
     EditText edtsearch;
     ProductAdapter productAdapter;
     List<Product> productList = new ArrayList<>();
-    List spm = new ArrayList();
+    List<Product> spm = new ArrayList<>();
     List<Feature> featureList = new ArrayList<>();
     User userInfoLogin;
 
@@ -56,40 +56,6 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setAdapter(productAdapter);
     }
 
-    //    private void getListFeatureAPI() {
-//        ApiService.apiService.featureListData().enqueue(new Callback<List<Feature>>() {
-//            @Override
-//            public void onResponse(Call<List<Feature>> call, Response<List<Feature>> response) {
-//                featureList = response.body();
-//                System.out.println("FeatureList call API ok");
-//            }
-//            @Override
-//            public void onFailure(Call<List<Feature>> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(), "Call API Errol  " + t, Toast.LENGTH_SHORT).show();
-//                System.out.println("FeatureList Call API Errol  " + t);
-//            }
-//        });
-//    }
-//    private void getListProductAPI() {
-//        ApiService.apiService.productListData().enqueue(new Callback<List<Product>>() {
-//            @Override
-//            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-//                productList = response.body();
-//                System.out.println("ProductList Call API ok");
-//                for(int i=0 ; i<=5;i++ ){
-//                    spm.add(productList.get(i));
-//                }
-//                productAdapter = new ProductAdapter(spm,getApplicationContext());
-//                recyclerView.setAdapter(productAdapter);
-//            }
-//            @Override
-//            public void onFailure(Call<List<Product>> call, Throwable t) {
-//                Toast.makeText(SearchActivity.this , "Call API Errol  " + t, Toast.LENGTH_SHORT).show();
-//                System.out.println("ProductList Call API Errol  " + t);
-//
-//            }
-//        });
-//    }
     public List<Product> searchProduct(String keyword) {
         List<Product> result = new ArrayList<>();
         for (Product product : productList) {
@@ -141,7 +107,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void ActionToolBar() {
         setSupportActionBar(toolbar);

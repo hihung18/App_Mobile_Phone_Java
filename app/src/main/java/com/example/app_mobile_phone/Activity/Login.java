@@ -75,11 +75,11 @@ public class Login extends AppCompatActivity {
                 String username = txtUsername.getText().toString().trim();
                 String password = txtPassword.getText().toString().trim();
                 if (username.length() == 0) {
-                    openDialogLogin(isLogin, "Vui lòng nhập username");
+                    openDialogLogin(isLogin, "Please enter username");
                     return;
                 }
                 if (password.length() == 0) {
-                    openDialogLogin(isLogin, "Vui lòng nhập password");
+                    openDialogLogin(isLogin, "Please enter password");
                     return;
                 }
                 handleLoginApi();
@@ -127,7 +127,7 @@ public class Login extends AppCompatActivity {
         if (isLogin) {
             txtDialogContent.setText(text_content);
         } else {
-            txtDialogContent.setText("Đăng nhập không thành công! \n" + text_content);
+            txtDialogContent.setText("Login unsuccessful!\n" + text_content);
         }
         btnDialogOke.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +144,6 @@ public class Login extends AppCompatActivity {
         String u_name = txtUsername.getText().toString().trim().toLowerCase();
         String u_password = txtPassword.getText().toString().toLowerCase();
         UserLogin userLogin = new UserLogin(u_name, u_password);
-        //UserApi.userAPI.postLogin(user, USER_LOGIN.getToken()).enqueue(new Callback<User>()
         ApiService.apiService.postLogin(userLogin).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -152,9 +151,8 @@ public class Login extends AppCompatActivity {
                 if (response.code() == 200) {
                     checkLogin = true;
                     userInfoLogin = response.body();
-                    userInfoLogin.setToken("Bearer "+ userInfoLogin.getToken());
+                    userInfoLogin.setToken("Bearer " + userInfoLogin.getToken());
                     Log.v("USER", String.valueOf(userInfoLogin));
-//                    openDialogLogin(true, "Đăng nhập thành công!");
                     // DANG NHAP THANH CONG CHUYEN MAN HINH O DAY
                     if (isRemember.isChecked()) {
                         username_save = u_name;
@@ -171,7 +169,7 @@ public class Login extends AppCompatActivity {
                 } else {
                     checkLogin = false;
                     userInfoLogin = null;
-                    openDialogLogin(false, "Tài khoản hoặc mật khẩu không chính xác!");
+                    openDialogLogin(false, "Incorrect account or password!");
                 }
             }
 
