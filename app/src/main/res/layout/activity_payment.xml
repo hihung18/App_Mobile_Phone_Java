@@ -16,7 +16,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/PAYMENT"
+            android:background="@color/orange"
             android:textSize="30sp"
+            android:padding="5sp"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <!--        set border-->
@@ -66,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:textSize="18sp"
+                android:inputType="number"
                 android:hint="Phone Number" />
 
             <EditText
@@ -304,7 +308,7 @@
                 android:id="@+id/btnConfirm"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#FF5722"
+                android:backgroundTint="@color/orange"
                 android:text="Confirm"
                 android:textColor="#000000" />
         </LinearLayout>

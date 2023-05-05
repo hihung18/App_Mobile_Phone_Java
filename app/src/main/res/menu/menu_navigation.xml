@@ -21,12 +21,13 @@
             android:title="Expensive Expensive" />
         <item
             android:id="@+id/mn_Cart"
-            android:icon="@drawable/baseline_smartphone_24"
+            android:icon="@drawable/baseline_shopping_cart_24"
             android:title="Cart" />
         <item
             android:id="@+id/mn_Order"
-            android:icon="@drawable/baseline_smartphone_24"
-            android:title="Order" />
+            android:icon="@drawable/baseline_playlist_add_check_24"
+            android:title="Order"
+            android:textColor="#F50057"/>
     </group>
     <item android:title="">
         <menu>

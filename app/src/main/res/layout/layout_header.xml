@@ -8,12 +8,4 @@
         android:layout_width="200sp"
         android:layout_height="200sp"
         android:src="@drawable/logo"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="202dp"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="LEZADA"
-        android:textSize="30sp" />
-
 </LinearLayout>

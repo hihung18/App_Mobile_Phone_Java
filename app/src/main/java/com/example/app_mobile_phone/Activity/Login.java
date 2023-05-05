@@ -148,6 +148,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Log.e("CODE", String.valueOf(response.code()));
+                System.out.println(response.code());
                 if (response.code() == 200) {
                     checkLogin = true;
                     userInfoLogin = response.body();

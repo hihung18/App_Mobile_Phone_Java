@@ -68,8 +68,8 @@ public class CheapActivity extends AppCompatActivity {
                 bundle.putSerializable("keyfeatureList", (Serializable) featureList);
                 intent.putExtra("userInfoLogin", userInfoLogin);
                 intent.putExtras(bundle);
-                System.out.println("FeatureList = " + featureList.size());
-                System.out.println("ProductList = " + productList.size());
+//                System.out.println("FeatureList = " + featureList.size());
+//                System.out.println("ProductList = " + productList.size());
                 startActivity(intent);
             }
         });
