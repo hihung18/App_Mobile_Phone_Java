@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -35,6 +38,7 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
     Button btnEnterNewPassword;
     EditText txtEnterNewPassword, txtEnterReNewPassword;
     ImageButton btnPrevious;
+    boolean passwordVisible, rePasswordVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,49 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
                 finish();
             }
         });
+        // Show password
+        txtEnterNewPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int Right = 2;
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    if(motionEvent.getRawX() >= txtEnterNewPassword.getRight() - txtEnterNewPassword.getCompoundDrawables()[Right].getBounds().width()){
+                        if(passwordVisible){
+                            txtEnterNewPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.show_password, 0);
+                            txtEnterNewPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            passwordVisible = false;
+                        }else{
+                            txtEnterNewPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.hide_password, 0);
+                            txtEnterNewPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            passwordVisible = true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+
+        // Show RePassword
+        txtEnterReNewPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int Right = 2;
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    if(motionEvent.getRawX() >= txtEnterReNewPassword.getRight() - txtEnterReNewPassword.getCompoundDrawables()[Right].getBounds().width()){
+                        if(rePasswordVisible){
+                            txtEnterReNewPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.show_password, 0);
+                            txtEnterReNewPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            rePasswordVisible = false;
+                        }else{
+                            txtEnterReNewPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.hide_password, 0);
+                            txtEnterReNewPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            rePasswordVisible = true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     public void handleLoginApi() {
@@ -92,7 +139,8 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
             openDialogSetPass(false, "Invalid email input!\nPlease return to the step of entering the email address.");
             return;
         }
-
+        LoadingDialog loadingDialog = new LoadingDialog(ForgotPassword_SetPass.this);
+        loadingDialog.startLoadingDialog();
         Log.e("email", email);
         Log.e("txtPassword", password);
         ChangePassword changePassword = new ChangePassword(email, password);
@@ -116,6 +164,7 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
                 }
+                loadingDialog.closeLoadingDialog();
             }
 
             @Override

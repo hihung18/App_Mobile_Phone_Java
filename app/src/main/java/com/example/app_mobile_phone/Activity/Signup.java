@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -39,6 +42,8 @@ public class Signup extends AppCompatActivity {
     TextView haveAccount;
 
     ImageButton btnPrevious;
+    boolean passwordVisible;
+    boolean rePasswordVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +97,48 @@ public class Signup extends AppCompatActivity {
                 handleSignupApi();
             }
         });
+        txtPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int Right = 2;
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    if(motionEvent.getRawX() >= txtPassword.getRight() - txtPassword.getCompoundDrawables()[Right].getBounds().width()){
+                        if(passwordVisible){
+                            txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0);
+                            txtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            passwordVisible = false;
+                        }else{
+                            txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0);
+                            txtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            passwordVisible = true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+
+        // Show RePassword
+        txtRePassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int Right = 2;
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    if(motionEvent.getRawX() >= txtRePassword.getRight() - txtRePassword.getCompoundDrawables()[Right].getBounds().width()){
+                        if(rePasswordVisible){
+                            txtRePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0);
+                            txtRePassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            rePasswordVisible = false;
+                        }else{
+                            txtRePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0);
+                            txtRePassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            rePasswordVisible = true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
 
         haveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +155,8 @@ public class Signup extends AppCompatActivity {
             }
         });
     }
+    // Show password
+
 
     private void addControls() {
         txtUsername = findViewById(R.id.txtUsernameSignup);
@@ -120,6 +169,8 @@ public class Signup extends AppCompatActivity {
     }
 
     private void handleSignupApi() {
+        LoadingDialog loadingDialog = new LoadingDialog(Signup.this);
+        loadingDialog.startLoadingDialog();
         String u_name = txtUsername.getText().toString().trim().toLowerCase();
         String u_email = txtEmail.getText().toString().trim().toLowerCase();
         String u_password = txtPassword.getText().toString();
@@ -152,6 +203,7 @@ public class Signup extends AppCompatActivity {
                 } catch (IOException e) {
                     Log.e("ERROR", "message: " + e.getMessage());
                 }
+                loadingDialog.closeLoadingDialog();
             }
 
             @Override

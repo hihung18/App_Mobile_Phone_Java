@@ -7,7 +7,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -43,6 +46,7 @@ public class Login extends AppCompatActivity {
     CheckBox isRemember;
 
     TextView createAccount, forgotPassword;
+    boolean passwordVisible;
 
 
     @Override
@@ -85,7 +89,27 @@ public class Login extends AppCompatActivity {
                 handleLoginApi();
             }
         });
-
+        // Show password
+        txtPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int Right = 2;
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    if(motionEvent.getRawX() >= txtPassword.getRight() - txtPassword.getCompoundDrawables()[Right].getBounds().width()){
+                        if(passwordVisible){
+                            txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0);
+                            txtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            passwordVisible = false;
+                        }else{
+                            txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0);
+                            txtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            passwordVisible = true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
         // createAccount
 
         createAccount.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +163,8 @@ public class Login extends AppCompatActivity {
     }
 
     public void handleLoginApi() {
+        LoadingDialog loadingDialog = new LoadingDialog(Login.this);
+        loadingDialog.startLoadingDialog();
         Log.e("txtUsername", txtUsername.getText().toString());
         Log.e("txtPassword", txtPassword.getText().toString());
         String u_name = txtUsername.getText().toString().trim().toLowerCase();
@@ -164,6 +190,7 @@ public class Login extends AppCompatActivity {
                         password_save = "";
                         checkBox = false;
                     }
+                    loadingDialog.closeLoadingDialog();
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     intent.putExtra("userInfoLogin", userInfoLogin);
                     startActivity(intent);
