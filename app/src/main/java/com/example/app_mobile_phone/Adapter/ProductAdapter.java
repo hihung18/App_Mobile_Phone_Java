@@ -1,6 +1,7 @@
 package com.example.app_mobile_phone.Adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         Product product = productList.get(position);
         holder.catepname.setText(product.getProductName());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.cateprice.setText("Price: " + decimalFormat.format(Double.parseDouble(String.valueOf(product.getProductPrice()))) + "$");
+        holder.cateprice.setText("Price: " + decimalFormat.format(Double.parseDouble(String.valueOf(product.getProductPrice()))) + " $");
+        holder.catepriceEvent.setText(decimalFormat.format(Double.parseDouble(String.valueOf(product.getProductPrice()))*1.2) + " $");
+        if (product.getEventId() == 1) holder.catepriceEvent.setVisibility(View.VISIBLE);
+        else holder.catepriceEvent.setVisibility(View.INVISIBLE);
+        holder.catepriceEvent.setPaintFlags(holder.cateprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         if (product.getImageUrls().size() != 0)
             Glide.with(context)
                     .load(product.getImageUrls().get(0))
@@ -60,13 +65,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView cateprice, catepname;
+        TextView cateprice, catepname,catepriceEvent;
         ImageView catehinhsp;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             cateprice = itemView.findViewById(R.id.cateprice);
             catepname = itemView.findViewById(R.id.catename);
             catehinhsp = itemView.findViewById(R.id.catehinhsp);
+            catepriceEvent = itemView.findViewById(R.id.catepriceEvent);
         }
     }
     public interface OnItemClickListener {

@@ -43,7 +43,7 @@ public interface ApiService {
             .create();
 
     public ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.10.60:8080/api/")
+            .baseUrl("http://192.168.10.40:8080/api/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -61,6 +61,8 @@ public interface ApiService {
     ///// Hong
     @GET("products")
     Call<List<Product>> productListData();
+    @GET("/api/products")
+    Call<List<Product>> getProductListSale(@Query("eventId") int eventId);
     @GET("features")
     Call<List<Feature>> featureListData();
 

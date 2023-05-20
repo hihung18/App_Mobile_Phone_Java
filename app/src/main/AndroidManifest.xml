@@ -18,6 +18,12 @@
             android:name=".Activity.OrderDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.SaleProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ChartActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.OrderActivity"
             android:exported="false" />
         <activity

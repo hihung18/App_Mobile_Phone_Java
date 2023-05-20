@@ -3,6 +3,7 @@ package com.example.app_mobile_phone.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.example.app_mobile_phone.Model.User;
 import com.example.app_mobile_phone.R;
 import com.example.app_mobile_phone.Retrofit.ApiService;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +54,7 @@ public class ProductDetail extends AppCompatActivity {
     ListView lvMyBinhLuan;
     Button btnChiTiet, btnTinhNang, btnAddtoCartProductDetail, btnBinhLuan, btnImage, btnGuiBinhLuan, btnDanhGia;
     Button btnCongAmount, btnTruAmount, btnPrevious;
-    TextView tvProductName, tvPrice, tvChiTiet, tvBrand, tvCamera, tvRam, tvRom,tvNumberInCartProductDetail;
+    TextView tvPriceProductDetailEvent,tvProductName, tvPrice, tvChiTiet, tvBrand, tvCamera, tvRam, tvRom,tvNumberInCartProductDetail;
     TextView tvStart1, tvStart2, tvStart3, tvStart4, tvStart5, tvBinhLuan, tvDanhGia, tvAmount;
     Product product;
     User userInfoLogin;
@@ -81,7 +83,12 @@ public class ProductDetail extends AppCompatActivity {
         /////
         tvProductName.setText(product.getProductName());
         tvProductName.setTag(product.getProductRemain());
-        tvPrice.setText("$" + String.valueOf(product.getProductPrice()));
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        tvPrice.setText(String.valueOf(product.getProductPrice()) + " $");
+        tvPriceProductDetailEvent.setText(decimalFormat.format(Double.parseDouble(String.valueOf( product.getProductPrice()*1.2))) + " $");
+        tvPriceProductDetailEvent.setPaintFlags(tvPriceProductDetailEvent.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        if (product.getEventId() == 1) tvPriceProductDetailEvent.setVisibility(View.VISIBLE);
+        else tvPriceProductDetailEvent.setVisibility(View.INVISIBLE);
         tvChiTiet.setText(product.getProductDescription());
         if (product.getImageUrls().size() != 0) {
             Glide.with(ProductDetail.this)
@@ -321,6 +328,7 @@ public class ProductDetail extends AppCompatActivity {
         tvAmount = findViewById(R.id.tvAmountProductDetail);
         ivIconCartProductDetail = findViewById(R.id.ivIconCartProductDetail);
         tvNumberInCartProductDetail = findViewById(R.id.tvNumberInCartProductDetail);
+        tvPriceProductDetailEvent = findViewById(R.id.tvPriceProductDetailEvent);
     }
     private void getPostRate(Rate rate){
         ApiService.apiService.PostRate(rate , userInfoLogin.getToken()).enqueue(new Callback<Rate>() {

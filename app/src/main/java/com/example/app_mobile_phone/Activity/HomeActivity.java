@@ -58,6 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     ListView listViewhome;
     List<Product> spm = new ArrayList();
     ProductMainAdapter productMainAdapter;
+    List<Product> productSaleList = new ArrayList<>();
     List<Product> product_cheap_List = new ArrayList<>();
     List<Product> produc_average_List = new ArrayList<>();
     List<Product> product_expensive_List = new ArrayList<>();
@@ -227,6 +228,14 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.mn_logOut:
                         Intent logout = new Intent(getApplicationContext(),Login.class);
                         startActivity(logout);
+                        break;
+                    case R.id.mn_productSale:
+                        bundle.putSerializable("productSaleList", (Serializable) productSaleList);
+                        bundle.putSerializable("keyfeatureList", (Serializable) featureList);
+                        Intent productSale = new Intent(getApplicationContext(), SaleProductActivity.class);
+                        productSale.putExtras(bundle);
+                        productSale.putExtra("userInfoLogin", userInfoLogin);
+                        startActivity(productSale);
                         break;
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);

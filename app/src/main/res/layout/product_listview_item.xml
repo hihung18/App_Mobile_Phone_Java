@@ -74,6 +74,15 @@ android:layout_height="wrap_content">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:id="@+id/catepriceEvent"
+                    android:text="Giá: 60050Đ"
+                    android:textSize="15sp"
+                    android:textColor="#999"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
                     android:id="@+id/cateprice"
                     android:text="Giá: 555000Đ"
                     android:textSize="15sp"
@@ -82,6 +91,7 @@ android:layout_height="wrap_content">
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+
         </LinearLayout>
 </FrameLayout>
 </androidx.cardview.widget.CardView>
