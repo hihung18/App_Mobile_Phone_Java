@@ -35,7 +35,7 @@
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:id="@+id/ivchart"
-            android:src="@drawable/baseline_ssid_chart_24"/>
+            android:src="@drawable/baseline_pie_chart_outline_24"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
