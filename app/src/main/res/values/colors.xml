@@ -9,8 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="yellow">#FFEA00</color>
     <color name="orange">#F87612</color>
-    <color name="gray">#DFDCDA</color>
+    <color name="signup">#FFB57D</color>
+    <color name="gray">#DCDCDC</color>
+    <color name="giatruoc">#CAC8C8</color>
     <color name="select_item">#9AF1EA</color>
     <color name="beige">#FAEDDF</color>
+    <color name="xam">#787171</color>
+    <color name="red">#DA3737</color>
 
 </resources>

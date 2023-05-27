@@ -1,2 +1,1 @@
-# App_Mobile_Phone_Java
-Ứng dụng bán điện thoại di động
+# Sale_Phone_App_API

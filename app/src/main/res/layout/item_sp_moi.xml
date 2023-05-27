@@ -10,44 +10,63 @@
     android:layout_width="160dp"
     android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            
-            android:orientation="vertical"
+    <LinearLayout
+        android:background="@drawable/background_linear"
+        android:layout_gravity="center"
+        android:layout_width="160dp"
+        android:layout_height="252sp">
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <LinearLayout
+
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/itemsp_image"
+                    android:src="@drawable/ic_media_24"
+                    android:layout_marginTop="10sp"
+                    android:layout_gravity="center"
+                    android:layout_width="120sp"
+                    android:layout_height="140sp"/>
+                <TextView
+                    android:id="@+id/itemsp_ten"
+                    android:text="dien thoai"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/itemsp_giaEvent"
+                    android:text="Giá: 555000Đ"
+                    android:textSize="15sp"
+                    android:textColor="#999"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/itemsp_gia"
+                    android:text="Giá: 555000Đ"
+                    android:textSize="15sp"
+                    android:textColor="@color/design_default_color_error"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
             <ImageView
-                android:id="@+id/itemsp_image"
-                android:src="@drawable/ic_media_24"
-                android:layout_width="match_parent"
-                android:layout_height="150sp"/>
-            <TextView
-                android:id="@+id/itemsp_ten"
-                android:text="Điện thoại"
-                android:textSize="20sp"
-                android:textColor="@android:color/holo_orange_dark"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/itemsp_gia"
-                android:text="Giá: 555000Đ"
-                android:textSize="15sp"
-                android:textColor="@android:color/holo_green_dark"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <ImageView
-            android:src="@drawable/ic_new"
-            android:layout_gravity="top|right"
-            android:layout_width="30sp"
-            android:layout_height="30sp"/>
-    </FrameLayout>
+                android:src="@drawable/ic_new"
+                android:layout_gravity="top|right"
+                android:layout_width="60sp"
+                android:layout_height="60sp"/>
+        </FrameLayout>
+    </LinearLayout>
+
 </androidx.cardview.widget.CardView>

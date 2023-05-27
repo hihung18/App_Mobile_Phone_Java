@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">App_Mobile_Phone</string>
-    <string name="forgot_password_string"><u>Forgot password</u></string>
+    <string name="forgot_password_string_vn">Forgot password</string>
     <string name="create_an_account_string"><u>Create an account</u></string>
     <string name="have_an_account_string"><u>Already have an account</u></string>
-    <string name="forgot_password_string_vn"><u>Forgot Password</u></string>
+    <string name="forgot_password_string"><u>Forgot Password</u></string>
     <string name="back_string"> &#60; </string>
     <string name="EnterOTP">Enter OTP verification code</string>
     <string name="enterOTP">Enter OTP</string>
     <string name="continues">CONTINUE</string>
-    <string name="EnterEmail">Please enter your registered email</string>
+    <string name="EnterEmail">Enter your registered email</string>
     <string name="enterEmail">Enter your email address</string>
     <string name="conplete">Complete</string>
     <string name="enterNewPass">Enter your new password</string>
@@ -16,25 +16,31 @@
     <string name="WelcometoApp">Welcome to App</string>
     <string name="Rememberme">Remember me</string>
     <string name="SIGNIN">SIGN IN</string>
-    <string name="ORDER">ORDER</string>
+    <string name="ORDER">Order</string>
     <string name="filterBy">Filter by: </string>
     <string name="OrderDetail">Order Detail</string>
     <string name="OrderID">Order ID:</string>
     <string name="OrderTime">Order Time: </string>
     <string name="Status">Status: </string>
     <string name="total">Totals: </string>
-    <string name="PAYMENT">PAYMENT</string>
+    <string name="PAYMENT">Payment</string>
     <string name="Deliveryaddress">Delivery address</string>
     <string name="Choosemethodpayment">Choose method payment:</string>
     <string name="Paymentondelivery">Payment on delivery</string>
     <string name="VisaCredit">Visa/Credit</string>
     <string name="Paymentdetail">Payment detail</string>
     <string name="Price">Price</string>
-    <string name="PRODUCTDETAIL">PRODUCT DETAIL</string>
+    <string name="PRODUCTDETAIL">Product Detail</string>
     <string name="Feature">Feature</string>
     <string name="Description">Description</string>
     <string name="Comment">Comment:</string>
     <string name="CreateAnAccount">Create An Account</string>
     <string name="SIGNUP">SIGN UP</string>
+    <string name="averageProduct"><b>Average Product</b></string>
+    <string name="cheapProduct"><b>Cheap Product</b></string>
+    <string name="expensiveProduct"><b>Expensive Product</b></string>
+    <string name="home"><b>Home</b></string>
+    <string name="saleProduct"><b>Sale Product</b></string>
+    <string name="searchProduct"><b>Search Product</b></string>
 
 </resources>

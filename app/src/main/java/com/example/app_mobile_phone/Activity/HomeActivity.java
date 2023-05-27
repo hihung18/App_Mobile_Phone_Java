@@ -148,10 +148,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void ActionViewFlipper() {
         List<String> mangquangcao = new ArrayList<>();
-        mangquangcao.add("http://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png");
-        mangquangcao.add("https://cdn1.hoanghamobile.com/tin-tuc/wp-content/uploads/2020/07/banner-trang-tin-sale.jpg");
+        mangquangcao.add("https://images.fpt.shop/unsafe/filters:quality(5)/fptshop.com.vn/uploads/images/2015/Tin-Tuc/a11.png");
+        mangquangcao.add("https://cdn.tgdd.vn/Files/2020/06/11/1262208/sale_800x450.jpg");
         mangquangcao.add("http://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-HC-Tra-Gop-800-300.png");
-        mangquangcao.add("http://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-big-ky-nguyen-800-300.jpg");
         for (int i = 0; i < mangquangcao.size(); i++) {
             ImageView imageView = new ImageView(getApplicationContext());
             Glide.with(getApplicationContext()).load(mangquangcao.get(i)).into(imageView);

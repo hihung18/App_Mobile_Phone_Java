@@ -109,7 +109,6 @@ public class SaleProductActivity extends AppCompatActivity {
 
     private void ActionViewFlipper() {
         List<String> mangquangcao = new ArrayList<>();
-        mangquangcao.add("https://images.fpt.shop/unsafe/filters:quality(5)/fptshop.com.vn/uploads/images/2015/Tin-Tuc/a11.png");
         mangquangcao.add("https://s3.cloud.cmctelecom.vn/tinhte1/2014/10/2624433_hinh-minh-hoa-tinhte.jpg");
         mangquangcao.add("https://s3.cloud.cmctelecom.vn/tinhte1/2018/09/4429992_GIAM1TR.png");
         mangquangcao.add("https://cdn.tgdd.vn/Files/2020/06/11/1262208/sale_800x450.jpg");

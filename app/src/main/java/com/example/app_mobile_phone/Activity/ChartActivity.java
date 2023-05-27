@@ -7,10 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.app_mobile_phone.Model.Feature;
 import com.example.app_mobile_phone.Model.Order;
-import com.example.app_mobile_phone.Model.Product;
 import com.example.app_mobile_phone.Model.User;
 import com.example.app_mobile_phone.R;
 import com.github.mikephil.charting.charts.PieChart;
