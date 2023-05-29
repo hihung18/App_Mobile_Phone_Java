@@ -37,6 +37,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -111,13 +113,14 @@ public class HomeActivity extends AppCompatActivity {
                     else if (product.getCateId() == 2) produc_average_List.add(product);
                     else if (product.getCateId() == 3) product_expensive_List.add(product);
                 }
-                Random random = new Random(); // Đối tượng Random để sinh số ngẫu nhiên
-
-                while (spm.size() < 6 && !productsListTmp.isEmpty()) { // Lặp cho đến khi đủ 6 mục hoặc hết danh sách ban đầu
-                    int randomIndex = random.nextInt(productsListTmp.size()); // Lấy số ngẫu nhiên trong khoảng từ 0 đến độ dài của danh sách
-                    Product randomItem = productsListTmp.get(randomIndex); // Lấy mục tương ứng từ danh sách ban đầu
-                    spm.add(randomItem); // Thêm vào danh sách mới
-                    productsListTmp.remove(randomIndex); // Loại bỏ khỏi danh sách ban đầu để tránh chọn trùng lặp
+                Collections.sort(productsListTmp, new Comparator<Product>() {
+                    @Override
+                    public int compare(Product p1, Product p2) {
+                        return p2.getProductCreateDate().compareTo(p1.getProductCreateDate());
+                    }
+                });
+                for (int i=0; i<6; i++){
+                    spm.add(productsListTmp.get(i));
                 }
                 productMainAdapter = new ProductMainAdapter(getApplicationContext(), spm);
                 recyclerViewHome.setAdapter(productMainAdapter);
@@ -129,7 +132,6 @@ public class HomeActivity extends AppCompatActivity {
                         intent.putExtra("keyProduct", product);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("keyfeatureList", (Serializable) featureList);
-                        intent.putExtra("userInfoLogin", userInfoLogin);
                         intent.putExtras(bundle);
                         getApplicationContext().startActivity(intent);
                     }
