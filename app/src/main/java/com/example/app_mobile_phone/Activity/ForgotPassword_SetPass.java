@@ -64,18 +64,18 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
                 String reNewPassword = txtEnterReNewPassword.getText().toString().trim();
                 if (newPassword.length() == 0) {
                     Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập mật khẩu mới!", ForgotPassword_SetPass.this, Login.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Please enter a new password!", ForgotPassword_SetPass.this, Login.class, true);
                     return;
                 }
                 else if (newPassword.length() < 6) {
                     Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Mật khẩu cần từ 6 ký tự trở lên.", ForgotPassword_SetPass.this, Login.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Password needs 6 or more characters.", ForgotPassword_SetPass.this, Login.class, true);
                     return;
                 }
 
                 else if (reNewPassword.length() == 0) {
                     Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập lại mật khẩu mới!", ForgotPassword_SetPass.this, Login.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Please re-enter new password!", ForgotPassword_SetPass.this, Login.class, true);
                     return;
                 }
 
@@ -147,12 +147,12 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
         String password = txtEnterNewPassword.getText().toString().trim();
         if (email.length() == 0) {
             Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
-            ShowDialog showDialog = new ShowDialog(dialog, false, "Email nhập vào không hợp lệ!\nVui lòng quay lại bước nhập địa chỉ Email.", ForgotPassword_SetPass.this, Login.class, true);
+            ShowDialog showDialog = new ShowDialog(dialog, false, "Email entered is not valid!\nPlease go back to entering your email address!", ForgotPassword_SetPass.this, Login.class, true);
             return;
         }
         if (!email.contains("@gmail.com")) {
             Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
-            ShowDialog showDialog = new ShowDialog(dialog, false, "Email nhập vào không hợp lệ!\nVui lòng quay lại bước nhập địa chỉ Email.", ForgotPassword_SetPass.this, Login.class, true);
+            ShowDialog showDialog = new ShowDialog(dialog, false, "Email entered is not valid!\nPlease go back to entering your email address!", ForgotPassword_SetPass.this, Login.class, true);
             return;
         }
 
@@ -168,7 +168,7 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.code() == 200) {
                         Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
-                        ShowDialog showDialog = new ShowDialog(dialog, true, "Thay đổi mật khẩu thành công!", ForgotPassword_SetPass.this, Login.class, true);
+                        ShowDialog showDialog = new ShowDialog(dialog, true, "Password change successful!", ForgotPassword_SetPass.this, Login.class, true);
                     }
                 } else {
                     try {
@@ -176,7 +176,7 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
                         strResponseBody = response.errorBody().string();
                         JSONObject messageObject = new JSONObject(strResponseBody);
                         Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
-                        ShowDialog showDialog = new ShowDialog(dialog, false, "Thay đổi mật khẩu thất bại!\n" + messageObject.get("message"), ForgotPassword_SetPass.this, Login.class, true);
+                        ShowDialog showDialog = new ShowDialog(dialog, false, "Password change failed!\n" + messageObject.get("message"), ForgotPassword_SetPass.this, Login.class, true);
                         Log.v("Error code 400", response.errorBody().string());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -191,7 +191,7 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
                 loadingDialog.closeLoadingDialog();
-                ShowDialog showDialog = new ShowDialog(dialog, false, "Lỗi kết nối! Vui lòng thử lại sau", ForgotPassword_SetPass.this, Login.class, true);
+                ShowDialog showDialog = new ShowDialog(dialog, false, "Connection errors! Please try again later", ForgotPassword_SetPass.this, Login.class, true);
             }
         });
     }

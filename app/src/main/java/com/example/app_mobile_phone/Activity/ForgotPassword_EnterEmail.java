@@ -60,11 +60,11 @@ public class ForgotPassword_EnterEmail extends AppCompatActivity {
             public void onClick(View view) {
                 String email = txtEnterEmail.getText().toString().trim().toLowerCase();
                 if (email.length() == 0) {
-                    openDialogEnterEmail(false, "Vui lòng nhập địa chỉ Email!");
+                    openDialogEnterEmail(false, "Please enter your Email!");
                     return;
                 }
                 if (!email.contains("@gmail.com")) {
-                    openDialogEnterEmail(false, "Email nhập vào không hợp lệ!");
+                    openDialogEnterEmail(false, "Invalid email input!");
                     return;
                 }
                 LoadingDialog loadingDialog = new LoadingDialog(ForgotPassword_EnterEmail.this);
@@ -72,9 +72,9 @@ public class ForgotPassword_EnterEmail extends AppCompatActivity {
                 sendEmailOTP();
                 loadingDialog.closeLoadingDialog();
                 if (checkSendEmail) {
-                    openDialogEnterEmail(true, "Gửi OTP thành công!\nVui lòng kiểm tra địa chỉ Email");
+                    openDialogEnterEmail(true, "OTP sent successfully!\n Please check your email address");
                 } else {
-                    openDialogEnterEmail(false, "Gửi OTP thất bại!\nVui lòng kiểm tra địa chỉ Email và thử lại");
+                    openDialogEnterEmail(false, "OTP sending failed!\nPlease check your email address and try again");
                 }
             }
         });

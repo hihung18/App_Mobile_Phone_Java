@@ -339,32 +339,24 @@
 
             <Button
                 android:id="@+id/btnClose"
-                android:layout_width="120dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/input_button"
                 android:layout_marginRight="20sp"
                 android:text="Close"
-                android:textSize="18sp"
-                android:paddingStart="20sp"
-                android:paddingEnd="20sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="10sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:textColor="@color/orange" />
 
             <Button
                 android:id="@+id/btnConfirm"
-                android:layout_width="120dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/input_button"
                 android:layout_marginLeft="20sp"
                 android:text="Confirm"
-                android:textSize="18sp"
-                android:paddingStart="20sp"
-                android:paddingEnd="20sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="10sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:textColor="@color/orange" />

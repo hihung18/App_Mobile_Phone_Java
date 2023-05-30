@@ -43,12 +43,12 @@ public class ForgotPassword_EnterCode extends AppCompatActivity {
                 String code = txtEnterCode.getText().toString().trim().toLowerCase();
                 if (code.length() == 0) {
                     Dialog dialog = new Dialog(ForgotPassword_EnterCode.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập mã xác minh!", ForgotPassword_EnterCode.this, ForgotPassword_SetPass.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Please enter the verification code!", ForgotPassword_EnterCode.this, ForgotPassword_SetPass.class, true);
                     return;
                 }
                 if (!code.equals(String.valueOf(ForgotPassword_EnterEmail.otpCode)) || code.length() < 6) {
                     Dialog dialog = new Dialog(ForgotPassword_EnterCode.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Mã xác minh không chính xác, vui lòng kiểm tra lại hoặc lấy mã OTP mới!", ForgotPassword_EnterCode.this, ForgotPassword_SetPass.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Verification code is incorrect, please check again or get a new OTP!", ForgotPassword_EnterCode.this, ForgotPassword_SetPass.class, true);
                     return;
                 }
                 Intent intent = new Intent(ForgotPassword_EnterCode.this, ForgotPassword_SetPass.class);

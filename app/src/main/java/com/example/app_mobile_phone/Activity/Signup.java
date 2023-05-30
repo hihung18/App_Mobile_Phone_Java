@@ -81,30 +81,30 @@ public class Signup extends AppCompatActivity {
 
                 if (username.length() == 0) {
                     Dialog dialog = new Dialog(Signup.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập username", Signup.this, Login.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Please enter username", Signup.this, Login.class, true);
                     return;
                 }
                 if (email.length() == 0) {
                     Dialog dialog = new Dialog(Signup.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập địa chỉ Email", Signup.this, Login.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Please enter your email address", Signup.this, Login.class, true);
                     return;
                 }
 
                 if (password.length() == 0) {
                     Dialog dialog = new Dialog(Signup.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập password", Signup.this, Login.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Please enter password", Signup.this, Login.class, true);
                     return;
                 }
 
                 if (rePassword.length() == 0) {
                     Dialog dialog = new Dialog(Signup.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập lại password", Signup.this, Login.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Please re-enter password", Signup.this, Login.class, true);
                     return;
                 }
 
                 if (!rePassword.equals(password)) {
                     Dialog dialog = new Dialog(Signup.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Hai mật khẩu không giống nhau", Signup.this, Login.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Two passwords are not the same", Signup.this, Login.class, true);
                     return;
                 }
 
@@ -204,7 +204,7 @@ public class Signup extends AppCompatActivity {
                         try {
                             JSONObject messageObject = new JSONObject(strResponseBody);
                             Dialog dialog = new Dialog(Signup.this);
-                            ShowDialog showDialog = new ShowDialog(dialog, true, "Đăng ký tài khoản thành công!\n" + messageObject.get("message"), Signup.this, Login.class, true);
+                            ShowDialog showDialog = new ShowDialog(dialog, true, "Successful account registration!\n" + messageObject.get("message"), Signup.this, Login.class, true);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -213,7 +213,7 @@ public class Signup extends AppCompatActivity {
                             String strResponseBody = response.errorBody().string();
                             JSONObject messageObject = new JSONObject(strResponseBody);
                             Dialog dialog = new Dialog(Signup.this);
-                            ShowDialog showDialog = new ShowDialog(dialog, false, "Đăng ký tài khoản thất bại!\n" + messageObject.get("message"), Signup.this, Login.class, true);
+                            ShowDialog showDialog = new ShowDialog(dialog, false, "Account registration failed!\n" + messageObject.get("message"), Signup.this, Login.class, true);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -228,7 +228,7 @@ public class Signup extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Dialog dialog = new Dialog(Signup.this);
                 loadingDialog.closeLoadingDialog();
-                ShowDialog showDialog = new ShowDialog(dialog, false, "Lỗi kết nối! Vui lòng thử lại sau", Signup.this, Login.class, true);
+                ShowDialog showDialog = new ShowDialog(dialog, false, "Connection errors! Please try again later", Signup.this, Login.class, true);
             }
         });
     }

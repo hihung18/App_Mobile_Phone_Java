@@ -73,7 +73,7 @@ public class Login extends AppCompatActivity {
             super.onBackPressed();
             return;
         } else {
-            mToast = Toast.makeText(Login.this, "Nhấn trở lại 2 lần để thoát", Toast.LENGTH_LONG);
+            mToast = Toast.makeText(Login.this, "Press back 2 times to exit", Toast.LENGTH_LONG);
             mToast.show();
         }
         backPressTime = System.currentTimeMillis();
@@ -102,12 +102,12 @@ public class Login extends AppCompatActivity {
                 String password = txtPassword.getText().toString().trim();
                 if (username.length() == 0) {
                     Dialog dialog = new Dialog(Login.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập username", Login.this, MainActivity.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Please enter username", Login.this, MainActivity.class, true);
                     return;
                 }
                 if (password.length() == 0) {
                     Dialog dialog = new Dialog(Login.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập password", Login.this, MainActivity.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Please enter password", Login.this, MainActivity.class, true);
                     return;
                 }
                 handleLoginApi();
@@ -192,7 +192,7 @@ public class Login extends AppCompatActivity {
                     checkLogin = false;
                     userInfoLogin = null;
                     Dialog dialog = new Dialog(Login.this);
-                    ShowDialog showDialog = new ShowDialog(dialog, false, "Tài khoản hoặc mật khẩu không chính xác!", Login.this, MainActivity.class, true);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Incorrect account or password!", Login.this, MainActivity.class, true);
                 }
                 loadingDialog.closeLoadingDialog();
             }
@@ -202,7 +202,7 @@ public class Login extends AppCompatActivity {
                 checkLogin = false;
                 Dialog dialog = new Dialog(Login.this);
                 loadingDialog.closeLoadingDialog();
-                ShowDialog showDialog = new ShowDialog(dialog, false, "Lỗi kết nối! Vui lòng thử lại sau", Login.this, MainActivity.class, true);
+                ShowDialog showDialog = new ShowDialog(dialog, false, "Connection errors! Please try again later", Login.this, MainActivity.class, true);
             }
         });
     }
