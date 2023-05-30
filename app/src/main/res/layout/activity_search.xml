@@ -28,8 +28,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleview_search"
         android:layout_marginTop="5sp"
-        android:layout_marginStart="5sp"
-        android:layout_marginEnd="5sp"
+        android:layout_marginStart="10sp"
+        android:layout_marginEnd="10sp"
         app:layout_constraintTop_toBottomOf="@id/edtsearch"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"

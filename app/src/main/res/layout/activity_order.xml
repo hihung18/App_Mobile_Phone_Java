@@ -33,7 +33,7 @@
             android:textStyle="bold" />
         <ImageView
             android:layout_width="50dp"
-            android:layout_marginLeft="35sp"
+            android:layout_marginLeft="30sp"
             android:layout_height="match_parent"
             android:id="@+id/ivchart"
             android:src="@drawable/baseline_insert_chart_outlined_24"

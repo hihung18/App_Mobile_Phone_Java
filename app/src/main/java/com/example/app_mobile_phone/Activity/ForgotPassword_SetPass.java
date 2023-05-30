@@ -2,8 +2,10 @@ package com.example.app_mobile_phone.Activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -22,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.app_mobile_phone.Model.ChangePassword;
 import com.example.app_mobile_phone.R;
 import com.example.app_mobile_phone.Retrofit.ApiService;
+import com.example.app_mobile_phone.Util.NetworkChangeReceiver;
+import com.example.app_mobile_phone.Util.ShowDialog;
 
 
 import org.json.JSONException;
@@ -40,13 +44,17 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
     ImageButton btnPrevious;
     boolean passwordVisible, rePasswordVisible;
 
+    private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password_set_pass);
+        ForgotPassword_EnterEmail.otpCode = -1;
         addControls();
         addEvents();
     }
+
 
     private void addEvents() {
         btnEnterNewPassword.setOnClickListener(new View.OnClickListener() {
@@ -55,21 +63,25 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
                 String newPassword = txtEnterNewPassword.getText().toString().trim();
                 String reNewPassword = txtEnterReNewPassword.getText().toString().trim();
                 if (newPassword.length() == 0) {
-                    openDialogSetPass(false, "Please enter a new password!");
+                    Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập mật khẩu mới!", ForgotPassword_SetPass.this, Login.class, true);
                     return;
                 }
-                if (reNewPassword.length() == 0) {
-                    openDialogSetPass(false, "Please re-enter new password!");
-                    return;
-                }
-
-                if (newPassword.length() < 6) {
-                    openDialogSetPass(false, "Password needs 6 or more characters");
+                else if (newPassword.length() < 6) {
+                    Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Mật khẩu cần từ 6 ký tự trở lên.", ForgotPassword_SetPass.this, Login.class, true);
                     return;
                 }
 
-                if (newPassword.equals(reNewPassword) == false) {
-                    openDialogSetPass(false, "Two passwords are not the same! Please re-enter");
+                else if (reNewPassword.length() == 0) {
+                    Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập lại mật khẩu mới!", ForgotPassword_SetPass.this, Login.class, true);
+                    return;
+                }
+
+                else if (newPassword.equals(reNewPassword) == false) {
+                    Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Hai mật khẩu không giống nhau! Vui lòng nhập lại.", ForgotPassword_SetPass.this, Login.class, true);
                     return;
                 }
 
@@ -83,6 +95,8 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
                 finish();
             }
         });
+
+
         // Show password
         txtEnterNewPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -132,15 +146,19 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
         String email = ForgotPassword_EnterEmail.emailInput;
         String password = txtEnterNewPassword.getText().toString().trim();
         if (email.length() == 0) {
-            openDialogSetPass(false, "Please go back to entering your email address!");
+            Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
+            ShowDialog showDialog = new ShowDialog(dialog, false, "Email nhập vào không hợp lệ!\nVui lòng quay lại bước nhập địa chỉ Email.", ForgotPassword_SetPass.this, Login.class, true);
             return;
         }
         if (!email.contains("@gmail.com")) {
-            openDialogSetPass(false, "Invalid email input!\nPlease return to the step of entering the email address.");
+            Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
+            ShowDialog showDialog = new ShowDialog(dialog, false, "Email nhập vào không hợp lệ!\nVui lòng quay lại bước nhập địa chỉ Email.", ForgotPassword_SetPass.this, Login.class, true);
             return;
         }
+
         LoadingDialog loadingDialog = new LoadingDialog(ForgotPassword_SetPass.this);
         loadingDialog.startLoadingDialog();
+
         Log.e("email", email);
         Log.e("txtPassword", password);
         ChangePassword changePassword = new ChangePassword(email, password);
@@ -149,14 +167,16 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     if (response.code() == 200) {
-                        openDialogSetPass(true, "Password change successful!");
+                        Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
+                        ShowDialog showDialog = new ShowDialog(dialog, true, "Thay đổi mật khẩu thành công!", ForgotPassword_SetPass.this, Login.class, true);
                     }
                 } else {
                     try {
                         String strResponseBody = "";
                         strResponseBody = response.errorBody().string();
                         JSONObject messageObject = new JSONObject(strResponseBody);
-                        openDialogSetPass(false, "Password change failed!" + messageObject.get("message"));
+                        Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
+                        ShowDialog showDialog = new ShowDialog(dialog, false, "Thay đổi mật khẩu thất bại!\n" + messageObject.get("message"), ForgotPassword_SetPass.this, Login.class, true);
                         Log.v("Error code 400", response.errorBody().string());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -169,7 +189,9 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Dialog dialog = new Dialog(ForgotPassword_SetPass.this);
+                loadingDialog.closeLoadingDialog();
+                ShowDialog showDialog = new ShowDialog(dialog, false, "Lỗi kết nối! Vui lòng thử lại sau", ForgotPassword_SetPass.this, Login.class, true);
             }
         });
     }
@@ -181,38 +203,17 @@ public class ForgotPassword_SetPass extends AppCompatActivity {
         btnPrevious = findViewById(R.id.btnPrevious);
     }
 
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, filter);
+        super.onStart();
+    }
 
-    public void openDialogSetPass(Boolean isSuccess, String text_content) {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.layout_dialog_message);
-        dialog.setCancelable(true);
-
-        Window window = dialog.getWindow();
-        if (window == null) {
-            return;
-        }
-
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        WindowManager.LayoutParams windowAttributes = window.getAttributes();
-        window.setAttributes(windowAttributes);
-
-        Button btnDialogOke = dialog.findViewById(R.id.btnDialogOke);
-        TextView txtDialogContent = dialog.findViewById(R.id.txtDialogContent);
-        txtDialogContent.setText(text_content);
-        btnDialogOke.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isSuccess) {
-                    Intent intent = new Intent(ForgotPassword_SetPass.this, Login.class);
-                    startActivity(intent);
-                } else {
-                    dialog.dismiss();
-                }
-            }
-        });
-        dialog.show();
+    @Override
+    protected void onStop() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        unregisterReceiver(networkChangeReceiver);
+        super.onStop();
     }
 }

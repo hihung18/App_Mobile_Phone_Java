@@ -134,7 +134,7 @@ public class HomeActivity extends AppCompatActivity {
                         bundle.putSerializable("keyfeatureList", (Serializable) featureList);
                         intent.putExtra("userInfoLogin", userInfoLogin);
                         intent.putExtras(bundle);
-                        getApplicationContext().startActivity(intent);
+                        startActivity(intent);
                     }
                 });
                 productMainAdapter.notifyDataSetChanged();

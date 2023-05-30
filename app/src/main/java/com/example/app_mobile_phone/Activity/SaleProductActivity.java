@@ -77,7 +77,7 @@ public class SaleProductActivity extends AppCompatActivity {
                         bundle.putSerializable("keyfeatureList", (Serializable) featureList);
                         intent.putExtra("userInfoLogin", userInfoLogin);
                         intent.putExtras(bundle);
-                        getApplicationContext().startActivity(intent);
+                        startActivity(intent);
                     }
                 });
                 productSaleAdapter.notifyDataSetChanged();

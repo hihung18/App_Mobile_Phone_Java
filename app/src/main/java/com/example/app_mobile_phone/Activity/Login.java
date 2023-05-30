@@ -3,10 +3,13 @@ package com.example.app_mobile_phone.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -18,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,20 +29,21 @@ import com.example.app_mobile_phone.Model.User;
 import com.example.app_mobile_phone.Model.UserLogin;
 import com.example.app_mobile_phone.R;
 import com.example.app_mobile_phone.Retrofit.ApiService;
+import com.example.app_mobile_phone.Util.InputHandle;
+import com.example.app_mobile_phone.Util.NetworkChangeReceiver;
+import com.example.app_mobile_phone.Util.ShowDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
+    private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
 
     // Biến toàn cục
     private static String username_save = "";
     private static String password_save = "";
-
     private static boolean checkBox = false;
-
-    public static User userInfoLogin = null;
     Button btnSignIn;
     Boolean checkLogin = false;
     EditText txtUsername, txtPassword;
@@ -46,16 +51,32 @@ public class Login extends AppCompatActivity {
     CheckBox isRemember;
 
     TextView createAccount, forgotPassword;
+
     boolean passwordVisible;
 
+    private long backPressTime;
+    private Toast mToast;
+    public static User userInfoLogin = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Log.v("haha", "VÀO LOGIN");
         addControls();
         addEvents();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressTime + 2000 > System.currentTimeMillis()) {
+            mToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            mToast = Toast.makeText(Login.this, "Nhấn trở lại 2 lần để thoát", Toast.LENGTH_LONG);
+            mToast.show();
+        }
+        backPressTime = System.currentTimeMillis();
     }
 
     private void addControls() {
@@ -69,6 +90,7 @@ public class Login extends AppCompatActivity {
         txtUsername.setText(username_save);
         txtPassword.setText(password_save);
         isRemember.setChecked(checkBox);
+        txtUsername.setFilters(new InputFilter[] {InputHandle.filter});
     }
 
     private void addEvents() {
@@ -79,28 +101,31 @@ public class Login extends AppCompatActivity {
                 String username = txtUsername.getText().toString().trim();
                 String password = txtPassword.getText().toString().trim();
                 if (username.length() == 0) {
-                    openDialogLogin(isLogin, "Please enter username");
+                    Dialog dialog = new Dialog(Login.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập username", Login.this, MainActivity.class, true);
                     return;
                 }
                 if (password.length() == 0) {
-                    openDialogLogin(isLogin, "Please enter password");
+                    Dialog dialog = new Dialog(Login.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập password", Login.this, MainActivity.class, true);
                     return;
                 }
                 handleLoginApi();
             }
         });
+
         // Show password
         txtPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 final int Right = 2;
-                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-                    if(motionEvent.getRawX() >= txtPassword.getRight() - txtPassword.getCompoundDrawables()[Right].getBounds().width()){
-                        if(passwordVisible){
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (motionEvent.getRawX() >= txtPassword.getRight() - txtPassword.getCompoundDrawables()[Right].getBounds().width()) {
+                        if (passwordVisible) {
                             txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0);
                             txtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                             passwordVisible = false;
-                        }else{
+                        } else {
                             txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0);
                             txtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                             passwordVisible = true;
@@ -110,12 +135,12 @@ public class Login extends AppCompatActivity {
                 return false;
             }
         });
-        // createAccount
 
+        // createAccount
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Signup.class);
+                Intent intent = new Intent(Login.this, Signup.class);
                 startActivity(intent);
             }
         });
@@ -128,39 +153,9 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
-    public void openDialogLogin(boolean isLogin, String text_content) {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.layout_dialog_message);
-        dialog.setCancelable(true);
-        Window window = dialog.getWindow();
-        if (window == null) {
-            return;
-        }
-
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        WindowManager.LayoutParams windowAttributes = window.getAttributes();
-        window.setAttributes(windowAttributes);
-
-        Button btnDialogOke = dialog.findViewById(R.id.btnDialogOke);
-        TextView txtDialogContent = dialog.findViewById(R.id.txtDialogContent);
-        if (isLogin) {
-            txtDialogContent.setText(text_content);
-        } else {
-            txtDialogContent.setText("Login unsuccessful!\n" + text_content);
-        }
-        btnDialogOke.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
 
     public void handleLoginApi() {
         LoadingDialog loadingDialog = new LoadingDialog(Login.this);
@@ -169,18 +164,14 @@ public class Login extends AppCompatActivity {
         Log.e("txtPassword", txtPassword.getText().toString());
         String u_name = txtUsername.getText().toString().trim().toLowerCase();
         String u_password = txtPassword.getText().toString().toLowerCase();
-        UserLogin userLogin = new UserLogin(u_name, u_password);
-        ApiService.apiService.postLogin(userLogin).enqueue(new Callback<User>() {
+        UserLogin user = new UserLogin(u_name, u_password);
+        ApiService.apiService.postLogin(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Log.e("CODE", String.valueOf(response.code()));
-                System.out.println(response.code());
                 if (response.code() == 200) {
                     checkLogin = true;
                     userInfoLogin = response.body();
-                    userInfoLogin.setToken("Bearer " + userInfoLogin.getToken());
-                    Log.v("USER", String.valueOf(userInfoLogin));
-                    // DANG NHAP THANH CONG CHUYEN MAN HINH O DAY
+
                     if (isRemember.isChecked()) {
                         username_save = u_name;
                         password_save = u_password;
@@ -190,22 +181,43 @@ public class Login extends AppCompatActivity {
                         password_save = "";
                         checkBox = false;
                     }
+                    // Dialog dialog = new Dialog(Login.this);
+                    // ShowDialog showDialog = new ShowDialog(dialog, true, "Đăng nhập thành công!", Login.this, MainActivity.class, true);
                     loadingDialog.closeLoadingDialog();
+                    userInfoLogin.setToken("Bearer " + userInfoLogin.getToken());
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     intent.putExtra("userInfoLogin", userInfoLogin);
                     startActivity(intent);
                 } else {
                     checkLogin = false;
                     userInfoLogin = null;
-                    openDialogLogin(false, "Incorrect account or password!");
+                    Dialog dialog = new Dialog(Login.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Tài khoản hoặc mật khẩu không chính xác!", Login.this, MainActivity.class, true);
                 }
+                loadingDialog.closeLoadingDialog();
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 checkLogin = false;
+                Dialog dialog = new Dialog(Login.this);
+                loadingDialog.closeLoadingDialog();
+                ShowDialog showDialog = new ShowDialog(dialog, false, "Lỗi kết nối! Vui lòng thử lại sau", Login.this, MainActivity.class, true);
             }
         });
     }
 
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        unregisterReceiver(networkChangeReceiver);
+        super.onStop();
+    }
 }

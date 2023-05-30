@@ -43,7 +43,7 @@ public interface ApiService {
             .create();
 
     public ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.10.221:8080/api/")
+            .baseUrl("http://10.252.5.215:8080/api/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -83,6 +83,7 @@ public interface ApiService {
     Call<Order> PutOrderByOrderID(@Path("orderId") int orderId, @Body Order order,@Header("Authorization") String token );
 
     /// Hào
+    //http://localhost:8080/api/orderDetailViews?userId=10101
     @GET("orderDetailViews")
     Call<List<OrderDetailView>> getOrderDetailViews(@Query("userId") int userId , @Header("Authorization") String token);
     @DELETE("orders/{orderId}")

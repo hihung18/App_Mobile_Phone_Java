@@ -2,9 +2,12 @@ package com.example.app_mobile_phone.Activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -22,6 +25,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.app_mobile_phone.Model.UserSignup;
 import com.example.app_mobile_phone.R;
 import com.example.app_mobile_phone.Retrofit.ApiService;
+import com.example.app_mobile_phone.Util.InputHandle;
+import com.example.app_mobile_phone.Util.NetworkChangeReceiver;
+import com.example.app_mobile_phone.Util.ShowDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +40,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Signup extends AppCompatActivity {
+    private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
+
     Boolean checkSignup = false;
 
     EditText txtUsername, txtEmail, txtPassword, txtRePassword;
@@ -42,6 +50,7 @@ public class Signup extends AppCompatActivity {
     TextView haveAccount;
 
     ImageButton btnPrevious;
+
     boolean passwordVisible;
     boolean rePasswordVisible;
 
@@ -71,72 +80,35 @@ public class Signup extends AppCompatActivity {
                 Log.e("txtUsername", txtRePassword.getText().toString());
 
                 if (username.length() == 0) {
-                    openDialogSignup(isSignup, "Please enter username");
+                    Dialog dialog = new Dialog(Signup.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập username", Signup.this, Login.class, true);
                     return;
                 }
                 if (email.length() == 0) {
-                    openDialogSignup(isSignup, "Please enter your email address");
+                    Dialog dialog = new Dialog(Signup.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập địa chỉ Email", Signup.this, Login.class, true);
                     return;
                 }
 
                 if (password.length() == 0) {
-                    openDialogSignup(isSignup, "Please enter password");
+                    Dialog dialog = new Dialog(Signup.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập password", Signup.this, Login.class, true);
                     return;
                 }
 
                 if (rePassword.length() == 0) {
-                    openDialogSignup(isSignup, "Please re-enter password");
+                    Dialog dialog = new Dialog(Signup.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Vui lòng nhập lại password", Signup.this, Login.class, true);
                     return;
                 }
 
                 if (!rePassword.equals(password)) {
-                    openDialogSignup(isSignup, "Two passwords are not the same");
+                    Dialog dialog = new Dialog(Signup.this);
+                    ShowDialog showDialog = new ShowDialog(dialog, false, "Hai mật khẩu không giống nhau", Signup.this, Login.class, true);
                     return;
                 }
 
                 handleSignupApi();
-            }
-        });
-        txtPassword.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                final int Right = 2;
-                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-                    if(motionEvent.getRawX() >= txtPassword.getRight() - txtPassword.getCompoundDrawables()[Right].getBounds().width()){
-                        if(passwordVisible){
-                            txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0);
-                            txtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                            passwordVisible = false;
-                        }else{
-                            txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0);
-                            txtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                            passwordVisible = true;
-                        }
-                    }
-                }
-                return false;
-            }
-        });
-
-        // Show RePassword
-        txtRePassword.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                final int Right = 2;
-                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-                    if(motionEvent.getRawX() >= txtRePassword.getRight() - txtRePassword.getCompoundDrawables()[Right].getBounds().width()){
-                        if(rePasswordVisible){
-                            txtRePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0);
-                            txtRePassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                            rePasswordVisible = false;
-                        }else{
-                            txtRePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0);
-                            txtRePassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                            rePasswordVisible = true;
-                        }
-                    }
-                }
-                return false;
             }
         });
 
@@ -154,9 +126,52 @@ public class Signup extends AppCompatActivity {
                 finish();
             }
         });
-    }
-    // Show password
 
+
+        // Show password
+        txtPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int Right = 2;
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (motionEvent.getRawX() >= txtPassword.getRight() - txtPassword.getCompoundDrawables()[Right].getBounds().width()) {
+                        if (passwordVisible) {
+                            txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0);
+                            txtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            passwordVisible = false;
+                        } else {
+                            txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0);
+                            txtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            passwordVisible = true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+
+        // Show RePassword
+        txtRePassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int Right = 2;
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (motionEvent.getRawX() >= txtRePassword.getRight() - txtRePassword.getCompoundDrawables()[Right].getBounds().width()) {
+                        if (rePasswordVisible) {
+                            txtRePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0);
+                            txtRePassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            rePasswordVisible = false;
+                        } else {
+                            txtRePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0);
+                            txtRePassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            rePasswordVisible = true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+    }
 
     private void addControls() {
         txtUsername = findViewById(R.id.txtUsernameSignup);
@@ -166,6 +181,9 @@ public class Signup extends AppCompatActivity {
         btnSignup = findViewById(R.id.btnSignup);
         haveAccount = findViewById(R.id.haveAccount);
         btnPrevious = findViewById(R.id.btnPrevious);
+
+        txtUsername.setFilters(new InputFilter[]{InputHandle.filter});
+        txtEmail.setFilters(new InputFilter[]{InputHandle.filter});
     }
 
     private void handleSignupApi() {
@@ -185,17 +203,17 @@ public class Signup extends AppCompatActivity {
                         String strResponseBody = response.body().string();
                         try {
                             JSONObject messageObject = new JSONObject(strResponseBody);
-                            openDialogSignup(true, "Successful account registration!\n" + messageObject.get("message"));
+                            Dialog dialog = new Dialog(Signup.this);
+                            ShowDialog showDialog = new ShowDialog(dialog, true, "Đăng ký tài khoản thành công!\n" + messageObject.get("message"), Signup.this, Login.class, true);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
-//                        Log.v("TAG", "jsonResponseBody: " + strResponseBody);
                     } else {
                         try {
                             String strResponseBody = response.errorBody().string();
                             JSONObject messageObject = new JSONObject(strResponseBody);
-                            openDialogSignup(false, "Account registration failed!\n" + messageObject.get("message"));
-//                          Log.v("Error code 400",response.errorBody().string());
+                            Dialog dialog = new Dialog(Signup.this);
+                            ShowDialog showDialog = new ShowDialog(dialog, false, "Đăng ký tài khoản thất bại!\n" + messageObject.get("message"), Signup.this, Login.class, true);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -208,48 +226,26 @@ public class Signup extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Dialog dialog = new Dialog(Signup.this);
+                loadingDialog.closeLoadingDialog();
+                ShowDialog showDialog = new ShowDialog(dialog, false, "Lỗi kết nối! Vui lòng thử lại sau", Signup.this, Login.class, true);
             }
         });
     }
 
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, filter);
+        Log.v("THEO DOI", "ON");
+        super.onStart();
+    }
 
-    public void openDialogSignup(boolean isSignup, String text_content) {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.layout_dialog_message);
-        dialog.setCancelable(true);
-
-        Window window = dialog.getWindow();
-        if (window == null) {
-            return;
-        }
-
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        WindowManager.LayoutParams windowAttributes = window.getAttributes();
-        window.setAttributes(windowAttributes);
-
-        Button btnDialogOke = dialog.findViewById(R.id.btnDialogOke);
-        TextView txtDialogContent = dialog.findViewById(R.id.txtDialogContent);
-        if (isSignup) {
-            txtDialogContent.setText(text_content);
-        } else {
-            txtDialogContent.setText(text_content);
-        }
-        btnDialogOke.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (isSignup) {
-                    Intent intent = new Intent(Signup.this, Login.class);
-                    startActivity(intent);
-                } else {
-                    dialog.dismiss();
-                }
-            }
-        });
-        dialog.show();
+    @Override
+    protected void onStop() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        unregisterReceiver(networkChangeReceiver);
+        Log.v("THEO DOI", "OFF");
+        super.onStop();
     }
 }
