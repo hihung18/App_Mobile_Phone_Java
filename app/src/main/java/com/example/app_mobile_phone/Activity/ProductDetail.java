@@ -152,6 +152,7 @@ public class ProductDetail extends AppCompatActivity {
                     order.setOrderDetails(map);
                     System.out.println("ORDER NEW : "+order);
                     PostNewOrder(order);
+
                 }
             }
         });
@@ -374,6 +375,7 @@ public class ProductDetail extends AppCompatActivity {
                 getListOrdersfromUserId();
                 System.out.println("PostOrder thành công");
                 AddProductToCartConfirmationDialog();
+                getOrderStatusCARTtoIcon();
 //                Toast.makeText(getApplicationContext(), "PostOrder Call API ok  ", Toast.LENGTH_SHORT).show();
             }
 

@@ -18,11 +18,11 @@
         <item
             android:id="@+id/mn_Average"
             android:icon="@drawable/baseline_smartphone_24"
-            android:title="Average Expensive" />
+            android:title="Average Product" />
         <item
             android:id="@+id/mn_Expensive"
             android:icon="@drawable/baseline_smartphone_24"
-            android:title="Expensive Expensive" />
+            android:title="Expensive Product" />
         <item
             android:id="@+id/mn_Cart"
             android:icon="@drawable/baseline_shopping_cart_24"
